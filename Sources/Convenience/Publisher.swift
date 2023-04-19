@@ -1,5 +1,5 @@
 //
-//  AnyPublisher.swift
+//  Publisher.swift
 //  CombineExt
 //
 //  Created by Andrea Altea on 19/04/23.
@@ -9,7 +9,7 @@
 import Combine
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public extension AnyPublisher {
+public extension Publisher {
     
     func sinkResult(_ completion: @escaping (Result<Output, Failure>) -> Void) -> AnyCancellable {
         self.materialize()

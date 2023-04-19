@@ -1,4 +1,4 @@
-//  OptionalTests.swift
+//  PublisherTests.swift
 //  CombineExt
 //
 //  Created by Andrea Altea on 19/04/2023.
@@ -10,7 +10,7 @@ import CombineExt
 import XCTest
 
 @available(OSX 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-final class AnyPublisherTests: XCTestCase {
+final class PublisherTests: XCTestCase {
     private var subscription: AnyCancellable?
     
     func testSinkResultValue() {
@@ -22,7 +22,6 @@ final class AnyPublisherTests: XCTestCase {
             .handleEvents(receiveCompletion: {
                 completion = $0
             })
-            .eraseToAnyPublisher()
             .sinkResult { result in
                 switch result {
                 case .success(let value):
@@ -49,7 +48,6 @@ final class AnyPublisherTests: XCTestCase {
         let error = NSError(domain: "Invalid", code: 200)
         
         subscription = subject
-            .eraseToAnyPublisher()
             .sinkResult { result in
                 switch result {
                 case .success(let value):
