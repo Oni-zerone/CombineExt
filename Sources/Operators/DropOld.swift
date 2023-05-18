@@ -91,12 +91,14 @@ extension Publishers.DropOld {
             lock.lock()
             defer { lock.unlock() }
 
-            let bufferDemand = buffer.demand(demand)
-            downstreamDemand += bufferDemand
-            let upstreamDemand = resendOldValue()
-            myUpstreamSubscription?.requestIfNeeded(upstreamDemand)
+            downstreamDemand += buffer.demand(demand)
+            if let oldValue = oldValue {
+                self.oldValue = nil
+                sendToDownstream(oldValue)
+            }
+            myUpstreamSubscription?.requestIfNeeded(.max(1))
         }
-        
+
         override func receive(_ input: Output) -> Subscribers.Demand {
             
             lock.lock()
@@ -145,6 +147,7 @@ extension Publishers.DropOld {
             return .max(1)
         }
         
+        @discardableResult
         private func sendToDownstream(_ input: Output) -> Subscribers.Demand {
             
             if downstreamDemand > .none { downstreamDemand -= 1 }
